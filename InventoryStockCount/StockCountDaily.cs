@@ -696,4 +696,5 @@ namespace InventoryStockCount
             return diffAmount;
         }
     }
+
 }

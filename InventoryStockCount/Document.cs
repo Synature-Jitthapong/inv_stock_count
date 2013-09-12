@@ -722,5 +722,20 @@ namespace InventoryStockCount
             }
             return false;
         }
+
+        public bool CancelPrevStockCountDoc(MySqlConnection conn, int shopId, int docTypeId)
+        {
+            bool isSuccess = false;
+            String strSql = "UPDATE document SET " +
+                " DocumentStatus=99, UpdateDate=NOW(), " +
+                " CancelDate=NOW(), Remark='ยกเลิกเอกสารนี้ เนื่องจากมีการนับหลังจากนี้แล้ว' " +
+                " WHERE ShopID=" + shopId + 
+                " AND DocumentTypeID=" + docTypeId + 
+                " AND DocumentStatus=1";
+            MySqlCommand cmd = new MySqlCommand(strSql, conn);
+            if (cmd.ExecuteNonQuery() > 0) isSuccess = true;
+
+            return isSuccess;
+        }
     }
 }
