@@ -723,7 +723,8 @@ namespace InventoryStockCount
             return false;
         }
 
-        public bool CancelPrevStockCountDoc(MySqlConnection conn, int shopId, int docTypeId)
+        public bool CancelPrevStockCountDoc(MySqlConnection conn, int shopId, int docTypeId, 
+            DateTime docDate)
         {
             bool isSuccess = false;
             String strSql = "UPDATE document SET " +
@@ -731,7 +732,8 @@ namespace InventoryStockCount
                 " CancelDate=NOW(), Remark='ยกเลิกเอกสารนี้ เนื่องจากมีการนับหลังจากนี้แล้ว' " +
                 " WHERE ShopID=" + shopId + 
                 " AND DocumentTypeID=" + docTypeId + 
-                " AND DocumentStatus=1";
+                " AND DocumentStatus=1 " +
+                " AND DocumentDate < '" + docDate.ToString("yyyy'-'MM'-'dd", dateProvider) + "'";
             MySqlCommand cmd = new MySqlCommand(strSql, conn);
             if (cmd.ExecuteNonQuery() > 0) isSuccess = true;
 
